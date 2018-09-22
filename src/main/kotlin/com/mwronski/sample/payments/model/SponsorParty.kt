@@ -1,7 +1,7 @@
 package com.mwronski.sample.payments.model
 
 data class SponsorParty(
-        val account_number: String,
-        val bank_id: String,
-        val bank_id_code: String
+        val account_number: AccountNumber,
+        val bank_id: BankId,
+        val bank_id_code: BankIdCode
 )
