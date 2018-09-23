@@ -79,8 +79,8 @@ class PaymentsApiIntegrationTest {
         //THEN data is changed
         resp.expectStatus().isNoContent()
         val paymentV2 = repository.findById(paymentV1.id).block()
-        Assert.assertThat("Version not updated", paymentV2.version, `is`(1))
-        Assert.assertThat("OrganizationId not updated", paymentV2.organisationId, `is`("new-organization-id"))
+        Assert.assertThat("Version not updated", paymentV2?.version, `is`(1))
+        Assert.assertThat("OrganizationId not updated", paymentV2?.organisationId, `is`("new-organization-id"))
     }
 
     @Test
