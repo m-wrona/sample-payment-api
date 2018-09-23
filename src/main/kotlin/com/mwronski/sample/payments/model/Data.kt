@@ -10,6 +10,6 @@ data class Data(
         val type: DataType,
         val id: DataId,
         val version: Int,
-        val organisation_id: String,
+        val organisationId: String,
         val attributes: Attributes
 )
