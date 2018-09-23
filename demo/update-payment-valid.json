@@ -1,7 +1,7 @@
 {
-  "type": "Payment",
-  "id": "4ee3a8d8-ca7b-4290-a52c-dd5b6165ec43",
+  "id": "76c8dc60-2ed0-422a-8e0e-306f4295bb21",
   "version": 0,
+  "type": "Payment",
   "organisation_id": "743d5b63-8e6f-432e-a8fa-c5d8d2ee5fcb",
   "attributes": {
     "amount": "100.21",

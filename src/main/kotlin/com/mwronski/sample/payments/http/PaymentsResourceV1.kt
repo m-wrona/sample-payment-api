@@ -40,31 +40,31 @@ class PaymentsResourceV1 {
     @GetMapping("/{id}")
     fun getById(@PathVariable(value = "id") id: String): Mono<ResponseEntity<Data>> =
             repository.findById(id)
-                    .map({ d -> ResponseEntity.ok(d) })
-                    .defaultIfEmpty(ResponseEntity.notFound().build())
+                    .map { dbData -> ResponseEntity.ok(dbData) }
+                    .defaultIfEmpty(notFoundResponse())
 
     @PostMapping("/")
-    fun create(@Valid @RequestBody data: Data): Mono<ResponseEntity<Void>> =
-            repository.save(data)
-                    .map { savedData -> noContentResponse(BASE_URL, savedData.id) }
+    fun create(@Valid @RequestBody data: NewDataRequest): Mono<ResponseEntity<Void>> =
+            repository.save(data.toData())
+                    .map { savedData -> createdResponse(BASE_URL, savedData.id) }
 
     @PutMapping("/{id}")
     fun update(
             @PathVariable(value = "id") id: String,
             @Valid @RequestBody data: Data
-    ): Mono<ResponseEntity<Data>> =
+    ): Mono<ResponseEntity<Void>> =
             repository.findById(id)
-                    .flatMap { _ -> repository.save(data) }
-                    .map { updatedData -> ResponseEntity.ok(updatedData) }
-                    .defaultIfEmpty(ResponseEntity.notFound().build())
+                    .flatMap { dbData -> repository.save(data.copy(version = dbData.version + 1)) }
+                    .map { _ -> noContentResponse() }
+                    .defaultIfEmpty(notFoundResponse())
 
     @DeleteMapping("/{id}")
     fun delete(@PathVariable(value = "id") id: String): Mono<ResponseEntity<Void>> =
             repository.findById(id)
                     .flatMap { dbData ->
                         repository.delete(dbData)
-                                .then(Mono.just(ResponseEntity<Void>(HttpStatus.OK)))
+                                .then(Mono.just(noContentResponse()))
                     }
-                    .defaultIfEmpty(ResponseEntity.notFound().build())
+                    .defaultIfEmpty(notFoundResponse())
 
 }
